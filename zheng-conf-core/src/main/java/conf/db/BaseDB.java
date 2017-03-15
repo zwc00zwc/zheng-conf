@@ -1,6 +1,7 @@
 package conf.db;
 
-import common.utility.PropertiesUtility;
+
+import conf.utility.PropertiesUtility;
 
 import java.sql.*;
 
@@ -26,7 +27,7 @@ public class BaseDB {
     }
 
     public static Connection getConnection(){
-        PropertiesUtility propertiesUtility=new PropertiesUtility("job.properties");
+        PropertiesUtility propertiesUtility=new PropertiesUtility("conf.properties");
         String driver =propertiesUtility.getProperty("jdbc.driver");
         String url = propertiesUtility.getProperty("jdbc.url");
         String username = propertiesUtility.getProperty("jdbc.username");

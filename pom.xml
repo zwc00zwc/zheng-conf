@@ -10,6 +10,7 @@
     <version>1.0-SNAPSHOT</version>
     <modules>
         <module>zheng-conf-core</module>
+        <module>zheng-conf-console</module>
     </modules>
 
     <properties>
@@ -210,6 +211,18 @@
                 <version>1.2.2</version>
             </dependency>
             <!-- 文件上传 end-->
+            <!--velocity-->
+            <dependency>
+                <groupId>velocity</groupId>
+                <artifactId>velocity</artifactId>
+                <version>1.5</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.velocity</groupId>
+                <artifactId>velocity-tools</artifactId>
+                <version>2.0</version>
+            </dependency>
+            <!--velocity end-->
         </dependencies>
     </dependencyManagement>
 
