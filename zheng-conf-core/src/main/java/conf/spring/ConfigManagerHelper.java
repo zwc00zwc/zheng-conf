@@ -1,5 +1,9 @@
 package conf.spring;
 
+import conf.AppConfigContext;
+import conf.ConfigHeartbeat;
+
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -15,7 +19,11 @@ public class ConfigManagerHelper {
             try {
                 lock.lock();
                 if (configManagerHelper==null){
+                    ConfigHeartbeat.instance();
                     configManagerHelper=new ConfigManagerHelper();
+                    Map map=new HashMap();
+                    map.put("aaa","bbb");
+                    AppConfigContext.setContext(map);
                 }
             } finally {
                 lock.unlock();
