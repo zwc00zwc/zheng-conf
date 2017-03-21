@@ -65,7 +65,7 @@ public class ConfigurationDal {
         int count=0;
         try {
             connection= BaseDB.getConnection();
-            preparedStatement=connection.prepareStatement("SELECT COUNT(*) FROM tb_job");
+            preparedStatement=connection.prepareStatement("SELECT COUNT(*) FROM tb_configuration");
             resultSet=preparedStatement.executeQuery();
             while (resultSet.next()){
                 count=resultSet.getInt(1);
@@ -130,7 +130,7 @@ public class ConfigurationDal {
                 configuration.setConfKey(resultSet.getString("conf_key"));
                 configuration.setConfValue(resultSet.getString("conf_value"));
                 configuration.setConfDesc(resultSet.getString("conf_desc"));
-                configuration.setUpdateTime(resultSet.getDate("create_time"));
+                configuration.setCreateTime(resultSet.getDate("create_time"));
                 configuration.setUpdateTime(resultSet.getDate("update_time"));
                 list.add(configuration);
             }
