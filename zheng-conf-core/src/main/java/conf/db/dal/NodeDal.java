@@ -3,6 +3,7 @@ package conf.db.dal;
 import conf.db.BaseDB;
 import conf.db.DbConfig;
 import conf.db.model.Node;
+import conf.db.model.PageModel;
 import conf.db.model.query.NodeQuery;
 import conf.utility.DateUtility;
 
@@ -77,10 +78,10 @@ public class NodeDal {
     /**
      * 查询配置节点
      * @param config
-     * @param node
+     * @param query
      * @return
      */
-    public List<Node> queryPageNode(DbConfig config, NodeQuery query){
+    public List<Node> queryPageList(DbConfig config, NodeQuery query){
         Connection connection=null;
         PreparedStatement preparedStatement=null;
         ResultSet resultSet=null;
@@ -98,10 +99,41 @@ public class NodeDal {
         return list;
     }
 
+    public PageModel<Node> queryPageList(NodeQuery query){
+        List<Node> nodeList=new ArrayList<Node>();
+        Connection connection=null;
+        PreparedStatement preparedStatement=null;
+        ResultSet resultSet=null;
+        int count=0;
+        try {
+            connection= BaseDB.getConnection();
+            preparedStatement=connection.prepareStatement("SELECT COUNT(*) FROM tb_node");
+            resultSet=preparedStatement.executeQuery();
+            while (resultSet.next()){
+                count=resultSet.getInt(1);
+            }
+            if (count>0){
+                preparedStatement=connection.prepareStatement("SELECT id,node_name,create_time,update_time FROM tb_node limit ?,?");
+                int i=1;
+                int m=2;
+                preparedStatement.setInt(i,query.getStartRow());
+                preparedStatement.setInt(m,query.getPageSize());
+                resultSet=preparedStatement.executeQuery();
+                nodeList= resultToNode(resultSet);
+            }
+        } catch (SQLException e) {
+            BaseDB.dispose(connection,preparedStatement,resultSet);
+        }finally {
+            BaseDB.dispose(connection,preparedStatement,resultSet);
+        }
+        PageModel<Node> pageModel=new PageModel<Node>(nodeList,query.getCurrPage(),count,query.getPageSize());
+        return pageModel;
+    }
+
     /**
      * 查询配置节点
      * @param config
-     * @param node
+     * @param query
      * @return
      */
     public Integer queryCountPage(DbConfig config, NodeQuery query){
@@ -132,9 +164,9 @@ public class NodeDal {
             while (resultSet.next()){
                 node=new Node();
                 node.setId(resultSet.getLong("id"));
-                node.setNodeName(resultSet.getString("nodeName"));
-                node.setCreateTime(resultSet.getDate("createTime"));
-                node.setUpdateTime(resultSet.getDate("updateTime"));
+                node.setNodeName(resultSet.getString("node_name"));
+                node.setCreateTime(resultSet.getDate("create_time"));
+                node.setUpdateTime(resultSet.getDate("update_time"));
                 list.add(node);
             }
         } catch (SQLException e) {

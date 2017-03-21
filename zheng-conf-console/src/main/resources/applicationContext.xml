@@ -18,7 +18,8 @@
     <import resource="classpath:config/spring-mvc.xml"/>
 
     <!--<bean id="businessMqNodeDal" class="businessmq.db.dal.BusinessMqNodeDal" />-->
-    <bean id="businessMqDal" class="conf.db.dal.ConfigurationDal" />
+    <bean id="configurationDal" class="conf.db.dal.ConfigurationDal" />
+    <bean id="nodeDal" class="conf.db.dal.NodeDal" />
 
     <context:component-scan base-package="services"></context:component-scan>
 
