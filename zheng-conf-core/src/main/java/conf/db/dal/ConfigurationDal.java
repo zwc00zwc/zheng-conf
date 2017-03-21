@@ -130,8 +130,8 @@ public class ConfigurationDal {
                 configuration.setConfKey(resultSet.getString("conf_key"));
                 configuration.setConfValue(resultSet.getString("conf_value"));
                 configuration.setConfDesc(resultSet.getString("conf_desc"));
-                configuration.setCreateTime(resultSet.getDate("create_time"));
-                configuration.setUpdateTime(resultSet.getDate("update_time"));
+                configuration.setCreateTime(resultSet.getTimestamp("create_time"));
+                configuration.setUpdateTime(resultSet.getTimestamp("update_time"));
                 list.add(configuration);
             }
         } catch (SQLException e) {

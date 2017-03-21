@@ -165,8 +165,8 @@ public class NodeDal {
                 node=new Node();
                 node.setId(resultSet.getLong("id"));
                 node.setNodeName(resultSet.getString("node_name"));
-                node.setCreateTime(resultSet.getDate("create_time"));
-                node.setUpdateTime(resultSet.getDate("update_time"));
+                node.setCreateTime(resultSet.getTimestamp("create_time"));
+                node.setUpdateTime(resultSet.getTimestamp("update_time"));
                 list.add(node);
             }
         } catch (SQLException e) {
