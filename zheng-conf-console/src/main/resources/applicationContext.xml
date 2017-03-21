@@ -18,9 +18,9 @@
     <import resource="classpath:config/spring-mvc.xml"/>
 
     <!--<bean id="businessMqNodeDal" class="businessmq.db.dal.BusinessMqNodeDal" />-->
-    <!--<bean id="businessMqDal" class="businessmq.db.dal.BusinessMqDal" />-->
+    <bean id="businessMqDal" class="conf.db.dal.ConfigurationDal" />
 
-    <!--<context:component-scan base-package="services"></context:component-scan>-->
+    <context:component-scan base-package="services"></context:component-scan>
 
     <!--<bean id="authExceptionHandler" class="handler.AuthExceptionHandler"></bean>-->
 

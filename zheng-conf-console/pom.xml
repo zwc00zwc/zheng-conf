@@ -12,6 +12,11 @@
     <name>zheng-conf-console Maven Webapp</name>
     <url>http://maven.apache.org</url>
     <dependencies>
+        <dependency>
+            <groupId>zheng-conf</groupId>
+            <artifactId>zheng-conf-core</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
         <!-- spring -->
         <dependency>
             <groupId>org.springframework</groupId>

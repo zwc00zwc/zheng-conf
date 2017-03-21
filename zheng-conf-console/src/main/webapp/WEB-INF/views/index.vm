@@ -66,8 +66,8 @@
             <dt><i class="Hui-iconfont"></i>  配置管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
             <dd>
                 <ul>
-                    <li><a _href="$!{request.getContextPath()}/config/index" data-title="" href="javascript:void(0)">配置节点</a></li>
-                    <li><a _href="$!{request.getContextPath()}/config/log" data-title="业务消息日志列表" href="javascript:void(0)">配置列表</a></li>
+                    <li><a _href="$!{request.getContextPath()}/node/index" data-title="" href="javascript:void(0)">配置节点</a></li>
+                    <li><a _href="$!{request.getContextPath()}/config/index" data-title="业务消息日志列表" href="javascript:void(0)">配置列表</a></li>
                 </ul>
             </dd>
         </dl>

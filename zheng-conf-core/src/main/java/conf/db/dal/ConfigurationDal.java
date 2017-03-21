@@ -3,6 +3,7 @@ package conf.db.dal;
 import conf.db.BaseDB;
 import conf.db.DbConfig;
 import conf.db.model.Configuration;
+import conf.db.model.PageModel;
 import conf.db.model.query.ConfigurationQuery;
 import conf.utility.DateUtility;
 
@@ -56,26 +57,35 @@ public class ConfigurationDal {
      * @param query
      * @return
      */
-    public List<Configuration> queryPageList(ConfigurationQuery query){
-        List<Configuration> nodeList=new ArrayList<Configuration>();
+    public PageModel<Configuration> queryPageList(ConfigurationQuery query){
+        List<Configuration> configurationList=new ArrayList<Configuration>();
         Connection connection=null;
         PreparedStatement preparedStatement=null;
         ResultSet resultSet=null;
-        connection= BaseDB.getConnection();
+        int count=0;
         try {
-            preparedStatement=connection.prepareStatement("SELECT `id`,`node_id`,`conf_key`,`conf_value`,`conf_desc`,`update_time`,`create_time` FROM tb_configuration limit ?,?");
-            int i=1;
-            int m=2;
-            preparedStatement.setInt(i,query.getStartRow());
-            preparedStatement.setInt(m,query.getPageSize());
+            connection= BaseDB.getConnection();
+            preparedStatement=connection.prepareStatement("SELECT COUNT(*) FROM tb_job");
             resultSet=preparedStatement.executeQuery();
-            nodeList= resultSetToConfiguration(resultSet);
+            while (resultSet.next()){
+                count=resultSet.getInt(1);
+            }
+            if (count>0){
+                preparedStatement=connection.prepareStatement("SELECT `id`,`node_id`,`conf_key`,`conf_value`,`conf_desc`,`update_time`,`create_time` FROM tb_configuration limit ?,?");
+                int i=1;
+                int m=2;
+                preparedStatement.setInt(i,query.getStartRow());
+                preparedStatement.setInt(m,query.getPageSize());
+                resultSet=preparedStatement.executeQuery();
+                configurationList= resultSetToConfiguration(resultSet);
+            }
         } catch (SQLException e) {
             BaseDB.dispose(connection,preparedStatement,resultSet);
         }finally {
             BaseDB.dispose(connection,preparedStatement,resultSet);
         }
-        return nodeList;
+        PageModel<Configuration> pageModel=new PageModel<Configuration>(configurationList,query.getCurrPage(),count,query.getPageSize());
+        return pageModel;
     }
 
     /**
