@@ -11,7 +11,6 @@ import java.util.concurrent.locks.ReentrantLock;
  * Created by alan.zheng on 2017/3/17.
  */
 public class ConfigManagerHelper {
-    private static Map<String,Object> context;
     private static ConfigManagerHelper configManagerHelper;
     private static ReentrantLock lock=new ReentrantLock();
     private static ConfigManagerHelper instance(){
@@ -21,6 +20,7 @@ public class ConfigManagerHelper {
                 if (configManagerHelper==null){
                     ConfigHeartbeat.instance();
                     configManagerHelper=new ConfigManagerHelper();
+                    //AppConfigContext.setContext();
                     Map map=new HashMap();
                     map.put("aaa","bbb");
                     AppConfigContext.setContext(map);

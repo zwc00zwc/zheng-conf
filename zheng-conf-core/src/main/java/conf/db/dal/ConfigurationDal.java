@@ -83,7 +83,7 @@ public class ConfigurationDal {
      * @param query
      * @return
      */
-    public int queryCountPage(ConfigurationQuery query){
+    public Integer queryCountPage(ConfigurationQuery query){
         Integer count=null;
         List<Configuration> nodeList=new ArrayList<Configuration>();
         Connection connection=null;
@@ -91,7 +91,7 @@ public class ConfigurationDal {
         ResultSet resultSet=null;
         connection= BaseDB.getConnection();
         try {
-            preparedStatement=connection.prepareStatement("SELECT COUNT(*) FROM tb_businessmq_node");
+            preparedStatement=connection.prepareStatement("SELECT COUNT(*) FROM tb_configuration");
             resultSet=preparedStatement.executeQuery();
             while (resultSet.next()){
                 count=resultSet.getInt(1);
