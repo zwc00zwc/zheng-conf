@@ -2,6 +2,7 @@ package conf;
 
 import conf.db.dal.ConfigurationDal;
 import conf.db.model.Configuration;
+import conf.utility.PropertiesUtility;
 import conf.zookeeper.ZookeeperConfig;
 import conf.zookeeper.ZookeeperRegistryCenter;
 import conf.zookeeper.listener.ConfListener;
@@ -32,19 +33,21 @@ public class ConfigHeartbeat {
                 if (configHeartbeat==null){
                     if (zookeeperRegistryCenter==null){
                         ZookeeperConfig zookeeperConfig=new ZookeeperConfig();
-                        zookeeperConfig.setServerLists("");
-                        zookeeperConfig.setNamespace("namespace");
-                        zookeeperConfig.setAuth("auth");
+                        PropertiesUtility propertiesUtility=new PropertiesUtility("conf.properties");
+                        zookeeperConfig.setServerLists(propertiesUtility.getProperty("reg.serverList"));
+                        zookeeperConfig.setNamespace(propertiesUtility.getProperty("reg.namespace"));
+                        zookeeperConfig.setAuth(propertiesUtility.getProperty("reg.auth"));
                         zookeeperRegistryCenter=new ZookeeperRegistryCenter(zookeeperConfig);
                         zookeeperRegistryCenter.init();
                     }
                     try {
                         if (!zookeeperRegistryCenter.isExisted("/")){
-                            CuratorFramework curatorFramework=(CuratorFramework) zookeeperRegistryCenter.getRawClient();
-                            PathChildrenCache childrenCache=new PathChildrenCache(curatorFramework,"/",true);
-                            childrenCache.getListenable().addListener(new ConfListener());
-                            childrenCache.start();
+                            zookeeperRegistryCenter.create("/conf",new String());
                         }
+                        CuratorFramework curatorFramework=(CuratorFramework) zookeeperRegistryCenter.getRawClient();
+                        PathChildrenCache childrenCache=new PathChildrenCache(curatorFramework,"/",true);
+                        childrenCache.getListenable().addListener(new ConfListener());
+                        childrenCache.start();
                     } catch (Exception e) {
                     }
                     configHeartbeat=new ConfigHeartbeat();
