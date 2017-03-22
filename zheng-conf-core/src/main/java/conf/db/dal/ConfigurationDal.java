@@ -131,14 +131,15 @@ public class ConfigurationDal {
                 for (int i=0;i<nodeIds.size();i++){
                     if (i==0){
                         sql.append(" node_id=?");
-                        preparedStatement.setInt(i+1,nodeIds.get(i));
                     }else {
                         sql.append(" OR node_id=?");
-                        preparedStatement.setInt(i+1,nodeIds.get(i));
                     }
                 }
             }
             preparedStatement=connection.prepareStatement(sql.toString());
+            for (int m=0;m<nodeIds.size();m++){
+                preparedStatement.setInt(m+1,nodeIds.get(m));
+            }
             resultSet=preparedStatement.executeQuery();
             configurationList= resultSetToConfiguration(resultSet);
         } catch (SQLException e) {

@@ -12,9 +12,8 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 public class ConfigHeartbeat {
     private static ConfigHeartbeat configHeartbeat;
-    private static ReentrantLock lock;
+    private static ReentrantLock lock = new ReentrantLock();
     private ConfigHeartbeat(){
-        lock=new ReentrantLock();
         //注册心跳
         Timer timer=new Timer();
         timer.schedule(new HeartRun(),0,5000);
