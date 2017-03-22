@@ -2,6 +2,11 @@ package conf;
 
 import conf.db.dal.ConfigurationDal;
 import conf.db.model.Configuration;
+import conf.zookeeper.ZookeeperConfig;
+import conf.zookeeper.ZookeeperRegistryCenter;
+import conf.zookeeper.listener.ConfListener;
+import org.apache.curator.framework.CuratorFramework;
+import org.apache.curator.framework.recipes.cache.PathChildrenCache;
 
 import java.util.*;
 import java.util.concurrent.locks.ReentrantLock;
@@ -13,6 +18,7 @@ import java.util.concurrent.locks.ReentrantLock;
 public class ConfigHeartbeat {
     private static ConfigHeartbeat configHeartbeat;
     private static ReentrantLock lock = new ReentrantLock();
+    private static ZookeeperRegistryCenter zookeeperRegistryCenter;
     private ConfigHeartbeat(){
         //注册心跳
         Timer timer=new Timer();
@@ -24,6 +30,23 @@ public class ConfigHeartbeat {
             try {
                 lock.lock();
                 if (configHeartbeat==null){
+                    if (zookeeperRegistryCenter==null){
+                        ZookeeperConfig zookeeperConfig=new ZookeeperConfig();
+                        zookeeperConfig.setServerLists("");
+                        zookeeperConfig.setNamespace("namespace");
+                        zookeeperConfig.setAuth("auth");
+                        zookeeperRegistryCenter=new ZookeeperRegistryCenter(zookeeperConfig);
+                        zookeeperRegistryCenter.init();
+                    }
+                    try {
+                        if (!zookeeperRegistryCenter.isExisted("/")){
+                            CuratorFramework curatorFramework=(CuratorFramework) zookeeperRegistryCenter.getRawClient();
+                            PathChildrenCache childrenCache=new PathChildrenCache(curatorFramework,"/",true);
+                            childrenCache.getListenable().addListener(new ConfListener());
+                            childrenCache.start();
+                        }
+                    } catch (Exception e) {
+                    }
                     configHeartbeat=new ConfigHeartbeat();
                 }
             } finally {
