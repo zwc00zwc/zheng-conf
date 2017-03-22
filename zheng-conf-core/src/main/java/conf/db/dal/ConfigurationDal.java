@@ -115,6 +115,41 @@ public class ConfigurationDal {
     }
 
     /**
+     * 查询节点配置
+     * @param nodeIds
+     * @return
+     */
+    public List<Configuration> queryByNodeIds(List<Integer> nodeIds){
+        List<Configuration> configurationList=new ArrayList<Configuration>();
+        Connection connection=null;
+        PreparedStatement preparedStatement=null;
+        ResultSet resultSet=null;
+        try {
+            connection= BaseDB.getConnection();
+            StringBuilder sql=new StringBuilder("SELECT id,node_id,conf_key,conf_value,conf_desc,update_time,create_time FROM tb_configuration WHERE");
+            if (nodeIds!=null&&nodeIds.size()>0){
+                for (int i=0;i<nodeIds.size();i++){
+                    if (i==0){
+                        sql.append(" node_id=?");
+                        preparedStatement.setInt(i+1,nodeIds.get(i));
+                    }else {
+                        sql.append(" OR node_id=?");
+                        preparedStatement.setInt(i+1,nodeIds.get(i));
+                    }
+                }
+            }
+            preparedStatement=connection.prepareStatement(sql.toString());
+            resultSet=preparedStatement.executeQuery();
+            configurationList= resultSetToConfiguration(resultSet);
+        } catch (SQLException e) {
+            BaseDB.dispose(connection,preparedStatement,resultSet);
+        }finally {
+            BaseDB.dispose(connection,preparedStatement,resultSet);
+        }
+        return configurationList;
+    }
+
+    /**
      * 转换实体
      * @param resultSet
      * @return

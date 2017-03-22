@@ -1,5 +1,6 @@
 package conf.spring;
 
+import conf.AppConfigContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
@@ -40,8 +41,9 @@ public class XxlConfPropertyPlaceholderConfigurer extends PropertyPlaceholderCon
 				while (start && end) {
 					// replace by xxl-conf
 					String key = buf.substring(placeholderPrefix.length(), buf.length() - placeholderSuffix.length());
+					String value = ConfigManagerHelper.get(key);
 //					String zkValue = XxlConfClient.get(key, "");
-//					buf = new StringBuffer(zkValue);
+					buf = new StringBuffer(value);
 //					logger.info(">>>>>>>>>>> xxl-conf resolved placeholder '" + key + "' to value [" + zkValue + "]");
 					start = buf.toString().startsWith(placeholderPrefix);
 					end = buf.toString().endsWith(placeholderSuffix);

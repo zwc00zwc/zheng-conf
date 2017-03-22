@@ -1,7 +1,9 @@
 package conf;
 
-import java.util.Timer;
-import java.util.TimerTask;
+import conf.db.dal.ConfigurationDal;
+import conf.db.model.Configuration;
+
+import java.util.*;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
@@ -30,6 +32,19 @@ public class ConfigHeartbeat {
             }
         }
         return configHeartbeat;
+    }
+
+    public static void loadConfig(){
+        //加载配置
+        ConfigurationDal configurationDal=new ConfigurationDal();
+        List<Configuration> configurationList= configurationDal.queryByNodeIds(AppConfigContext.getNodeIds());
+        Map map=new HashMap();
+        if (configurationList != null && configurationList.size() > 0){
+            for (Configuration config:configurationList) {
+                map.put(config.getConfKey(),config.getConfValue());
+            }
+        }
+        AppConfigContext.setContext(map);
     }
 
     class HeartRun extends TimerTask {
