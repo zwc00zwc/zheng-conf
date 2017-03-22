@@ -35,6 +35,13 @@ public class ConfigController extends BaseController {
         return "/config/index";
     }
 
+    @RequestMapping(value = "/config/add")
+    public String add(Model model, HttpSession httpSession, Integer currPage){
+//        model.addAttribute("rolelist",list);
+//        model.addAttribute("member",member);
+        return "/config/add";
+    }
+
     @ResponseBody
     @RequestMapping(value = "/config/update")
     public String update(String keyvalue){

@@ -1,13 +1,19 @@
 #set($layout =  "share/hi-layout.vm" )
 <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 配置管理 <span class="c-gray en">&gt;</span> 配置列表 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
 <div class="page-container">
-    <div class="cl pd-5 bg-1 bk-gray">
+##    <div class="text-c"> 日期范围：
+##        <input type="text" onfocus="WdatePicker({maxDate:'#F{$dp.$D(\'datemax\')||\'%y-%M-%d\'}'})" id="datemin" class="input-text Wdate" style="width:120px;">
+##        -
+##        <input type="text" onfocus="WdatePicker({minDate:'#F{$dp.$D(\'datemin\')}',maxDate:'%y-%M-%d'})" id="datemax" class="input-text Wdate" style="width:120px;">
+##        <input type="text" class="input-text" style="width:250px" placeholder="输入管理员名称" id="" name="">
+##        <button type="submit" class="btn btn-success" id="" name=""><i class="Hui-iconfont">&#xe665;</i> 搜用户</button>
+##    </div>
+    <div class="cl pd-5 bg-1 bk-gray mt-20">
         <span class="l">
 ##            <a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a>
-##            #if($auth.isPermission("/role/resetadmin"))
-##                <a href="javascript:;" onclick="admin_role_reset()" class="btn btn-warning radius"> 重置管理员</a>
-##            #end
+            <a href="javascript:;" onclick="config_add('添加配置','$!{request.getContextPath()}/config/add','800','500')" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加配置</a>
         </span>
+        <span class="r">共有数据：<strong>54</strong> 条</span>
     </div>
     <div class="mt-20">
         <div class="dataTables_wrapper no-footer">
@@ -38,17 +44,7 @@
                         <td>$!date.format('yyyy-MM-dd HH:mm:ss',$item.updateTime)</td>
                         <td>$!date.format('yyyy-MM-dd HH:mm:ss',$item.createTime)</td>
                         <td class="f-14">
-                            #if($item.status==1)
-                                <a class="btn btn-warning radius" onclick="job_command(this,$!{item.id},'PAUSE')" href="javascript:;">暂停</a>
-                                <a class="btn btn-primary radius" onclick="job_command(this,$!{item.id},'EXECUTE')" href="javascript:;">执行</a>
-                                <a class="btn btn-warning radius" onclick="job_edit_corn('修改执行表达式','$!{request.getContextPath()}/job/editcorn?jobid=$!{item.id}','800')" href="javascript:;">修改执行表达式</a>
-                                <a class="btn btn-danger radius" onclick="job_command(this,$!{item.id},'SHUTDOWN')" href="javascript:;">停止</a>
-                            #elseif($item.status==-1)
-                                <a class="btn btn-danger radius" onclick="job_delete(this,$!{item.id})" href="javascript:;">删除</a>
-                            #elseif($item.status==-2)
-                                <a class="btn btn-success radius" onclick="job_command(this,$!{item.id},'RESUME')" href="javascript:;">启动</a>
-                                <a class="btn btn-danger radius" onclick="job_command(this,$!{item.id},'SHUTDOWN')" href="javascript:;">停止</a>
-                            #end
+                            <a title="编辑" href="javascript:;" onclick="config_edit('管理员编辑','$!{request.getContextPath()}/config/edit?memberid=$item.id','1','800','500')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a>
                         </td>
                     </tr>
                     #end
@@ -64,3 +60,14 @@
 <script type="text/javascript" src="$!{request.getContextPath()}/resource/lib/My97DatePicker/WdatePicker.js"></script>
 <script type="text/javascript" src="$!{request.getContextPath()}/resource/js/h-ui/H-ui.js"></script>
 <script type="text/javascript" src="$!{request.getContextPath()}/resource/js/h-ui/H-ui.admin.js"></script>
+<script type="text/javascript">
+    /*配置-增加*/
+    function config_add(title,url,w,h){
+        layer_show(title,url,w,h);
+    }
+
+    /*配置-编辑*/
+    function config_edit(title,url,id,w,h){
+        layer_show(title,url,w,h);
+    }
+</script>
