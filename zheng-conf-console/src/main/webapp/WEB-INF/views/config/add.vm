@@ -3,60 +3,21 @@
     <form class="form form-horizontal" id="form-admin-add">
         <input type="hidden" name="id" value="0">
         <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>登录名：</label>
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>节点：</label>
             <div class="formControls col-xs-8 col-sm-9">
                 <input type="text" class="input-text" value="" placeholder="" id="userName" name="userName">
             </div>
         </div>
         <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>用户名：</label>
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>配置key：</label>
             <div class="formControls col-xs-8 col-sm-9">
                 <input type="text" class="input-text" value="" placeholder="" id="displayName" name="displayName">
             </div>
         </div>
         <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>初始密码：</label>
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>配置值：</label>
             <div class="formControls col-xs-8 col-sm-9">
                 <input type="password" class="input-text" autocomplete="off" value="" placeholder="密码" id="password" name="password">
-            </div>
-        </div>
-        <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>确认密码：</label>
-            <div class="formControls col-xs-8 col-sm-9">
-                <input type="password" class="input-text" autocomplete="off"  placeholder="确认新密码" id="password2" name="password2">
-            </div>
-        </div>
-        <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>性别：</label>
-            <div class="formControls col-xs-8 col-sm-9 skin-minimal">
-                <div class="radio-box">
-                    <input name="sex" type="radio" value="1" id="sex-1" checked>
-                    <label for="sex-1">男</label>
-                </div>
-                <div class="radio-box">
-                    <input type="radio" id="sex-2" value="2" name="sex">
-                    <label for="sex-2">女</label>
-                </div>
-            </div>
-        </div>
-        <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>手机：</label>
-            <div class="formControls col-xs-8 col-sm-9">
-                <input type="text" class="input-text" value="" placeholder="" id="phone" name="phone">
-            </div>
-        </div>
-        <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-3">节点：</label>
-            <div class="formControls col-xs-8 col-sm-9">
-                <dl class="permission-list">
-                    <dd>
-##                        #foreach($item in $rolelist)
-##                            <label class="">
-##                                <input type="checkbox" value="$!{item.id}" name="user-Character-0-0-0" id="user-Character-0-0-0">
-##                                $!{item.displayName}</label>
-##                        #end
-                    </dd>
-                </dl>
             </div>
         </div>
         <input type="hidden" name="roleids" id="roleids">
