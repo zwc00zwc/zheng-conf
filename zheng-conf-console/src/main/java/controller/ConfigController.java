@@ -3,10 +3,14 @@ package controller;
 import conf.db.model.Configuration;
 import conf.db.model.PageModel;
 import conf.db.model.query.ConfigurationQuery;
+import conf.utility.PropertiesUtility;
+import conf.zookeeper.ZookeeperConfig;
+import conf.zookeeper.ZookeeperRegistryCenter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import services.ConfigurationService;
 
 import javax.servlet.http.HttpSession;
@@ -29,6 +33,19 @@ public class ConfigController extends BaseController {
         model.addAttribute("pageModel",pageModel);
         model.addAttribute("user",getAuthUser(httpSession));
         return "/config/index";
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/config/update")
+    public String update(String keyvalue){
+        ZookeeperConfig zookeeperConfig=new ZookeeperConfig();
+        zookeeperConfig.setServerLists("localhost:2181");
+        zookeeperConfig.setNamespace("conf");
+        zookeeperConfig.setAuth("auth");
+        ZookeeperRegistryCenter zookeeperRegistryCenter=new ZookeeperRegistryCenter(zookeeperConfig);
+        zookeeperRegistryCenter.init();
+        zookeeperRegistryCenter.create("/conf/1",keyvalue);
+        return "update";
     }
 
 }

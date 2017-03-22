@@ -41,11 +41,11 @@ public class ConfigHeartbeat {
                         zookeeperRegistryCenter.init();
                     }
                     try {
-                        if (!zookeeperRegistryCenter.isExisted("/")){
+                        if (!zookeeperRegistryCenter.isExisted("/conf")){
                             zookeeperRegistryCenter.create("/conf",new String());
                         }
                         CuratorFramework curatorFramework=(CuratorFramework) zookeeperRegistryCenter.getRawClient();
-                        PathChildrenCache childrenCache=new PathChildrenCache(curatorFramework,"/",true);
+                        PathChildrenCache childrenCache=new PathChildrenCache(curatorFramework,"/conf",true);
                         childrenCache.getListenable().addListener(new ConfListener());
                         childrenCache.start();
                     } catch (Exception e) {
