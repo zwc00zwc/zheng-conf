@@ -21,16 +21,15 @@ import java.util.List;
 public class ConfigurationDal {
     /**
      * insert
-     * @param config
      * @param configuration
      * @return
      */
-    public Long insertConfiguration(DbConfig config,Configuration configuration){
+    public Long insertConfiguration(Configuration configuration){
         Connection connection=null;
         PreparedStatement preparedStatement=null;
         ResultSet resultSet=null;
-        connection= BaseDB.getConnection(config);
         try {
+            connection= BaseDB.getConnection();
             preparedStatement=connection.prepareStatement("INSERT INTO tb_configuration(node_id,conf_key,conf_value,conf_desc,update_time,create_time) " +
                     "VALUES (?,?,?,?,?,?)",PreparedStatement.RETURN_GENERATED_KEYS);
             preparedStatement.setLong(1,configuration.getNodeId());
@@ -50,6 +49,66 @@ public class ConfigurationDal {
             BaseDB.dispose(connection,preparedStatement,resultSet);
         }
         return null;
+    }
+
+    public boolean updateConfiguration(Configuration configuration){
+        Connection connection=null;
+        PreparedStatement preparedStatement=null;
+        ResultSet resultSet=null;
+        try {
+            connection= BaseDB.getConnection();
+            StringBuilder stringBuilder=new StringBuilder();
+            preparedStatement=connection.prepareStatement("UPDATE tb_configuration SET node_id=?,conf_key=?,conf_value=?,conf_desc=?,update_time=? WHERE id=?");
+            preparedStatement.setLong(1,configuration.getNodeId());
+            preparedStatement.setString(2,configuration.getConfKey());
+            preparedStatement.setString(3,configuration.getConfValue());
+            preparedStatement.setString(4,configuration.getConfDesc());
+            preparedStatement.setString(5,DateUtility.getStrFromDate(configuration.getUpdateTime(),""));
+            preparedStatement.setLong(6,configuration.getId());
+            if (preparedStatement.executeUpdate()>0){
+                return true;
+            }else {
+                return false;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            BaseDB.dispose(connection,preparedStatement,resultSet);
+        }
+        return false;
+    }
+
+    /**
+     * 查询配置
+     * @param configId
+     * @return
+     */
+    public Configuration queryById(Long configId){
+        Configuration configuration=new Configuration();
+        Connection connection=null;
+        PreparedStatement preparedStatement=null;
+        ResultSet resultSet=null;
+        try {
+            connection= BaseDB.getConnection();
+            preparedStatement=connection.prepareStatement("SELECT `id`,`node_id`,`conf_key`,`conf_value`,`conf_desc`,`update_time`,`create_time` FROM tb_configuration WHERE id=?");
+            preparedStatement.setLong(1,configId);
+            resultSet=preparedStatement.executeQuery();
+            while (resultSet.next()){
+                configuration=new Configuration();
+                configuration.setId(resultSet.getLong("id"));
+                configuration.setNodeId(resultSet.getInt("node_id"));
+                configuration.setConfKey(resultSet.getString("conf_key"));
+                configuration.setConfValue(resultSet.getString("conf_value"));
+                configuration.setConfDesc(resultSet.getString("conf_desc"));
+                configuration.setCreateTime(resultSet.getTimestamp("create_time"));
+                configuration.setUpdateTime(resultSet.getTimestamp("update_time"));
+            }
+        } catch (SQLException e) {
+            BaseDB.dispose(connection,preparedStatement,resultSet);
+        }finally {
+            BaseDB.dispose(connection,preparedStatement,resultSet);
+        }
+        return configuration;
     }
 
     /**

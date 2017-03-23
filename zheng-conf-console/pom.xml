@@ -110,6 +110,14 @@
             <artifactId>commons-fileupload</artifactId>
         </dependency>
         <!-- 文件上传 end-->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+        </dependency>
     </dependencies>
     <build>
         <finalName>zheng-conf-console</finalName>

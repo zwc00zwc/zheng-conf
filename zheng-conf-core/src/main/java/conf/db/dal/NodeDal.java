@@ -77,17 +77,15 @@ public class NodeDal {
 
     /**
      * 查询配置节点
-     * @param config
-     * @param query
      * @return
      */
-    public List<Node> queryPageList(DbConfig config, NodeQuery query){
+    public List<Node> queryList(){
         Connection connection=null;
         PreparedStatement preparedStatement=null;
         ResultSet resultSet=null;
         List<Node> list=new ArrayList<Node>();
-        connection=BaseDB.getConnection(config);
         try {
+            connection= BaseDB.getConnection();
             preparedStatement=connection.prepareStatement("SELECT id,node_name,create_time,update_time FROM tb_node");
             resultSet=preparedStatement.executeQuery();
             list = resultToNode(resultSet);
@@ -99,6 +97,11 @@ public class NodeDal {
         return list;
     }
 
+    /**
+     * 分页查询
+     * @param query
+     * @return
+     */
     public PageModel<Node> queryPageList(NodeQuery query){
         List<Node> nodeList=new ArrayList<Node>();
         Connection connection=null;
