@@ -31,7 +31,7 @@ public class NodeDal {
         try {
             connection= BaseDB.getConnection();
             preparedStatement=connection.prepareStatement("INSERT INTO tb_node(`node_name`,`create_time`,`update_time`) VALUES (?,?,?)",PreparedStatement.RETURN_GENERATED_KEYS);
-            preparedStatement.setString(1,node.getNodeName());
+            preparedStatement.setString(1,node.getName());
             preparedStatement.setString(2,DateUtility.getStrFromDate(new Date(),""));
             preparedStatement.setString(3, DateUtility.getStrFromDate(new Date(),""));
             preparedStatement.execute();
@@ -58,7 +58,7 @@ public class NodeDal {
         try {
             connection=BaseDB.getConnection();
             preparedStatement=connection.prepareStatement("UPDATE tb_node SET `node_name`=?,`update_time`=? WHERE id=?");
-            preparedStatement.setString(1,node.getNodeName());
+            preparedStatement.setString(1,node.getName());
             preparedStatement.setString(2,DateUtility.getStrFromDate(new Date(),""));
             preparedStatement.setLong(3,node.getId());
             if (preparedStatement.executeUpdate()>0){
@@ -90,7 +90,7 @@ public class NodeDal {
             while (resultSet.next()){
                 node=new Node();
                 node.setId(resultSet.getLong("id"));
-                node.setNodeName(resultSet.getString("node_name"));
+                node.setName(resultSet.getString("node_name"));
                 node.setCreateTime(resultSet.getTimestamp("create_time"));
                 node.setUpdateTime(resultSet.getTimestamp("update_time"));
             }
@@ -194,7 +194,7 @@ public class NodeDal {
             while (resultSet.next()){
                 node=new Node();
                 node.setId(resultSet.getLong("id"));
-                node.setNodeName(resultSet.getString("node_name"));
+                node.setName(resultSet.getString("node_name"));
                 node.setCreateTime(resultSet.getTimestamp("create_time"));
                 node.setUpdateTime(resultSet.getTimestamp("update_time"));
                 list.add(node);

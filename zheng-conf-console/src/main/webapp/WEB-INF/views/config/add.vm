@@ -64,14 +64,6 @@
             focusCleanup:true,
             success:"valid",
             submitHandler:function(form){
-
-                var roleids='';
-                $("input[type=checkbox]").each(function(){
-                    if (this.checked){
-                        roleids+=$(this).val()+',';
-                    }
-                })
-                $('#roleids').val(roleids);
                 jQuery.ajax({
                     url: '$!{request.getContextPath()}/config/adding',
                     data: jQuery('#form-config-add').serialize(),

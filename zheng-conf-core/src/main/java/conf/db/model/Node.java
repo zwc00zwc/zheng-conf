@@ -14,7 +14,7 @@ public class Node {
     /**
      * 节点名字
      */
-    private String nodeName;
+    private String name;
     /**
      * 创建时间
      */
@@ -32,12 +32,12 @@ public class Node {
         this.id = id;
     }
 
-    public String getNodeName() {
-        return nodeName;
+    public String getName() {
+        return name;
     }
 
-    public void setNodeName(String nodeName) {
-        this.nodeName = nodeName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Date getCreateTime() {

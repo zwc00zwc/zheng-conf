@@ -1,30 +1,16 @@
 #set($layout =  "share/hi-layout.vm" )
 <article class="page-container">
     <form class="form form-horizontal" id="form-node-add">
-        <input type="hidden" name="id" value="$!{configuration.id}">
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>节点：</label>
             <div class="formControls col-xs-8 col-sm-9">
-                <input type="text" class="input-text" value="$!{configuration.confKey}" id="nodeName" name="nodeName">
+                <input type="text" class="input-text" value="" id="name" name="name">
             </div>
         </div>
-##        <div class="row cl">
-##            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>节点key：</label>
-##            <div class="formControls col-xs-8 col-sm-9">
-##                <input type="text" class="input-text" value="$!{configuration.confKey}" id="confKey" name="confKey">
-##            </div>
-##        </div>
-##        <div class="row cl">
-##            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>配置值：</label>
-##            <div class="formControls col-xs-8 col-sm-9">
-##                <input type="text" class="input-text" value="$!{configuration.confValue}" id="confValue" name="confValue">
-##            </div>
-##        </div>
-##        <input type="hidden" name="roleids" id="roleids">
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3">备注：</label>
             <div class="formControls col-xs-8 col-sm-9">
-                <textarea name="confDesc" cols="" rows="" class="textarea"  placeholder="说点什么...100个字符以内" dragonfly="true" onKeyUp="textarealength(this,100)">$!{configuration.confDesc}</textarea>
+                <textarea name="confDesc" cols="" rows="" class="textarea"  placeholder="说点什么...100个字符以内" dragonfly="true" onKeyUp="textarealength(this,100)"></textarea>
                 <p class="textarea-numberbar"><em class="textarea-length">0</em>/100</p>
             </div>
         </div>
@@ -46,22 +32,14 @@
 
         $("#form-node-add").validate({
             rules:{
-                nodeName:{
-                    required:true,
+                name:{
+                    required:true
                 }
             },
             onkeyup:false,
             focusCleanup:true,
             success:"valid",
             submitHandler:function(form){
-
-                var roleids='';
-                $("input[type=checkbox]").each(function(){
-                    if (this.checked){
-                        roleids+=$(this).val()+',';
-                    }
-                })
-                $('#roleids').val(roleids);
                 jQuery.ajax({
                     url: '$!{request.getContextPath()}/node/adding',
                     data: jQuery('#form-node-add').serialize(),
