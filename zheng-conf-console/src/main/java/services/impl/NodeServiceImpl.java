@@ -48,4 +48,24 @@ public class NodeServiceImpl implements NodeService {
         }
         return pageModel;
     }
+
+    public boolean insertNode(Node node) {
+        try {
+            if (nodeDal.insertNode(node)>0){
+                return true;
+            }
+        } catch (Exception e) {
+            logger.error("新增节点异常"+e.toString());
+        }
+        return false;
+    }
+
+    public boolean updateNode(Node node) {
+        try {
+            return nodeDal.updateNode(node);
+        } catch (Exception e) {
+            logger.error("修改节点异常"+e.toString());
+        }
+        return false;
+    }
 }

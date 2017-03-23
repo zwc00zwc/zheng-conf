@@ -1,5 +1,6 @@
 package controller;
 
+import common.JsonResult;
 import conf.db.model.Node;
 import conf.db.model.PageModel;
 import conf.db.model.query.NodeQuery;
@@ -7,9 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import services.NodeService;
 
 import javax.servlet.http.HttpSession;
+import java.util.Date;
 
 /**
  * Created by alan.zheng on 2017/3/21.
@@ -34,6 +37,19 @@ public class NodeController extends BaseController {
     @RequestMapping(value = "/node/add")
     public String add(Model model, HttpSession httpSession, Integer currPage){
         return "/node/add";
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/node/adding")
+    public JsonResult adding(Node node){
+        node.setCreateTime(new Date());
+        node.setUpdateTime(new Date());
+        if (node.getId()>0){
+            nodeService.updateNode(node);
+            return jsonResult(1,"修改成功");
+        }
+        nodeService.insertNode(node);
+        return jsonResult(1,"新增成功");
     }
 
     @RequestMapping(value = "/node/edit")

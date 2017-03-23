@@ -21,16 +21,15 @@ import java.util.List;
 public class NodeDal {
     /**
      * insert并返回主键
-     * @param config
      * @param node
      * @return
      */
-    public Long insertNode(DbConfig config, Node node){
+    public Long insertNode(Node node){
         Connection connection=null;
         PreparedStatement preparedStatement=null;
         ResultSet resultSet=null;
-        connection= BaseDB.getConnection(config);
         try {
+            connection= BaseDB.getConnection();
             preparedStatement=connection.prepareStatement("INSERT INTO tb_node(`node_name`,`create_time`,`update_time`) VALUES (?,?,?)",PreparedStatement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1,node.getNodeName());
             preparedStatement.setString(2,DateUtility.getStrFromDate(new Date(),""));
@@ -50,15 +49,14 @@ public class NodeDal {
 
     /**
      * 更新ById
-     * @param config
      * @param node
      * @return
      */
-    public boolean updateNode(DbConfig config, Node node){
+    public boolean updateNode(Node node){
         Connection connection=null;
         PreparedStatement preparedStatement=null;
-        connection=BaseDB.getConnection(config);
         try {
+            connection=BaseDB.getConnection();
             preparedStatement=connection.prepareStatement("UPDATE tb_node SET `node_name`=?,`update_time`=? WHERE id=?");
             preparedStatement.setString(1,node.getNodeName());
             preparedStatement.setString(2,DateUtility.getStrFromDate(new Date(),""));

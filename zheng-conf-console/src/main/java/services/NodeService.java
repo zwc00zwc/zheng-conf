@@ -15,4 +15,8 @@ public interface NodeService {
     List<Node> queryList();
 
     PageModel<Node> queryPageList(NodeQuery query);
+
+    boolean insertNode(Node node);
+
+    boolean updateNode(Node node);
 }
