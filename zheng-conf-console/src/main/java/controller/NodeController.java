@@ -44,7 +44,7 @@ public class NodeController extends BaseController {
     public JsonResult adding(Node node){
         node.setCreateTime(new Date());
         node.setUpdateTime(new Date());
-        if (node.getId()>0){
+        if (node!=null && node.getId() != null && node.getId()>0){
             nodeService.updateNode(node);
             return jsonResult(1,"修改成功");
         }
