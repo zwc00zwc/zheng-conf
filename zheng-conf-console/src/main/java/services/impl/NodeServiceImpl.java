@@ -21,6 +21,15 @@ public class NodeServiceImpl implements NodeService {
     @Autowired
     private NodeDal nodeDal;
 
+    public Node queryById(Long nodeId) {
+        try {
+            return nodeDal.queryById(nodeId);
+        } catch (Exception e) {
+            logger.error("查询节点异常"+e.toString());
+        }
+        return null;
+    }
+
     public List<Node> queryList() {
         try {
             return nodeDal.queryList();

@@ -28,6 +28,18 @@ public class NodeController extends BaseController {
         PageModel<Node> pageModel= nodeService.queryPageList(query);
         model.addAttribute("pageModel",pageModel);
         model.addAttribute("user",getAuthUser(httpSession));
-        return "node/index";
+        return "/node/index";
+    }
+
+    @RequestMapping(value = "/node/add")
+    public String add(Model model, HttpSession httpSession, Integer currPage){
+        return "/node/add";
+    }
+
+    @RequestMapping(value = "/node/edit")
+    public String update(Model model, HttpSession httpSession, Long nodeId){
+        Node node= nodeService.queryById(nodeId);
+        model.addAttribute("node",node);
+        return "/config/add";
     }
 }

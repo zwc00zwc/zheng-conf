@@ -76,6 +76,35 @@ public class NodeDal {
     }
 
     /**
+     * 查询节点
+     * @return
+     */
+    public Node queryById(Long nodeId){
+        Connection connection=null;
+        PreparedStatement preparedStatement=null;
+        ResultSet resultSet=null;
+        Node node=new Node();
+        try {
+            connection= BaseDB.getConnection();
+            preparedStatement=connection.prepareStatement("SELECT id,node_name,create_time,update_time FROM tb_node WHERE id=?");
+            preparedStatement.setLong(1,nodeId);
+            resultSet=preparedStatement.executeQuery();
+            while (resultSet.next()){
+                node=new Node();
+                node.setId(resultSet.getLong("id"));
+                node.setNodeName(resultSet.getString("node_name"));
+                node.setCreateTime(resultSet.getTimestamp("create_time"));
+                node.setUpdateTime(resultSet.getTimestamp("update_time"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            BaseDB.dispose(connection,preparedStatement,null);
+        }
+        return node;
+    }
+
+    /**
      * 查询配置节点
      * @return
      */

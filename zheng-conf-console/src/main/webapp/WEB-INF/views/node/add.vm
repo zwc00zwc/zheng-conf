@@ -1,0 +1,82 @@
+#set($layout =  "share/hi-layout.vm" )
+<article class="page-container">
+    <form class="form form-horizontal" id="form-node-add">
+        <input type="hidden" name="id" value="$!{configuration.id}">
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>节点：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" class="input-text" value="$!{configuration.confKey}" id="nodeName" name="nodeName">
+            </div>
+        </div>
+##        <div class="row cl">
+##            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>节点key：</label>
+##            <div class="formControls col-xs-8 col-sm-9">
+##                <input type="text" class="input-text" value="$!{configuration.confKey}" id="confKey" name="confKey">
+##            </div>
+##        </div>
+##        <div class="row cl">
+##            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>配置值：</label>
+##            <div class="formControls col-xs-8 col-sm-9">
+##                <input type="text" class="input-text" value="$!{configuration.confValue}" id="confValue" name="confValue">
+##            </div>
+##        </div>
+##        <input type="hidden" name="roleids" id="roleids">
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3">备注：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <textarea name="confDesc" cols="" rows="" class="textarea"  placeholder="说点什么...100个字符以内" dragonfly="true" onKeyUp="textarealength(this,100)">$!{configuration.confDesc}</textarea>
+                <p class="textarea-numberbar"><em class="textarea-length">0</em>/100</p>
+            </div>
+        </div>
+        <div class="row cl">
+            <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
+                <input class="btn btn-primary radius" type="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
+            </div>
+        </div>
+    </form>
+</article>
+#parse("share/hi-footer.vm")
+<script type="text/javascript">
+    $(function(){
+        $('.skin-minimal input').iCheck({
+            checkboxClass: 'icheckbox-blue',
+            radioClass: 'iradio-blue',
+            increaseArea: '20%'
+        });
+
+        $("#form-node-add").validate({
+            rules:{
+                nodeName:{
+                    required:true,
+                }
+            },
+            onkeyup:false,
+            focusCleanup:true,
+            success:"valid",
+            submitHandler:function(form){
+
+                var roleids='';
+                $("input[type=checkbox]").each(function(){
+                    if (this.checked){
+                        roleids+=$(this).val()+',';
+                    }
+                })
+                $('#roleids').val(roleids);
+                jQuery.ajax({
+                    url: '$!{request.getContextPath()}/node/adding',
+                    data: jQuery('#form-node-add').serialize(),
+                    type: "post",
+                    success: function (data) {
+                        if (data.code > 0) {
+                            layer.msg("更新成功",{icon:1,time:1000});
+                            window.parent.location.reload();
+                        }
+                        else {
+                            layer.msg(data.msg,{icon:1,time:1000});
+                        }
+                    }
+                });
+            }
+        });
+    });
+</script>
