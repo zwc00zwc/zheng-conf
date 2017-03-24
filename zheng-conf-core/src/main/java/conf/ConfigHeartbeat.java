@@ -8,6 +8,7 @@ import conf.zookeeper.ZookeeperRegistryCenter;
 import conf.zookeeper.listener.ConfListener;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.recipes.cache.PathChildrenCache;
+import org.slf4j.LoggerFactory;
 
 import java.util.*;
 import java.util.concurrent.locks.ReentrantLock;
@@ -17,6 +18,7 @@ import java.util.concurrent.locks.ReentrantLock;
  * Created by alan.zheng on 2017/3/17.
  */
 public class ConfigHeartbeat {
+    private static org.slf4j.Logger logger = LoggerFactory.getLogger(ConfigHeartbeat.class);
     private static ConfigHeartbeat configHeartbeat;
     private static ReentrantLock lock = new ReentrantLock();
     private static ZookeeperRegistryCenter zookeeperRegistryCenter;
@@ -41,14 +43,15 @@ public class ConfigHeartbeat {
                         zookeeperRegistryCenter.init();
                     }
                     try {
-                        if (!zookeeperRegistryCenter.isExisted("/conf")){
-                            zookeeperRegistryCenter.create("/conf",new String());
-                        }
+//                        if (!zookeeperRegistryCenter.isExisted("/conf")){
+//                            zookeeperRegistryCenter.create("/conf",new String());
+//                        }
                         CuratorFramework curatorFramework=(CuratorFramework) zookeeperRegistryCenter.getRawClient();
-                        PathChildrenCache childrenCache=new PathChildrenCache(curatorFramework,"/conf",true);
+                        PathChildrenCache childrenCache=new PathChildrenCache(curatorFramework,"/",true);
                         childrenCache.getListenable().addListener(new ConfListener());
                         childrenCache.start();
                     } catch (Exception e) {
+                        logger.error("zookeeper配置监听异常"+e.toString());
                     }
                     configHeartbeat=new ConfigHeartbeat();
                 }
