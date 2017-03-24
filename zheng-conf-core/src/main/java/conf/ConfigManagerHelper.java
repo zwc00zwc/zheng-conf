@@ -17,15 +17,9 @@ public class ConfigManagerHelper {
     private static ReentrantLock lock=new ReentrantLock();
     private static ReentrantLock staticLock=new ReentrantLock();
 
-//    static {
-//        if (configManagerHelper==null){
-//            staticLock.lock();
-//            if (configManagerHelper==null){
-//
-//            }
-//            staticLock.unlock();
-//        }
-//    }
+    private ConfigManagerHelper(){
+
+    }
 
     private static ConfigManagerHelper instance(){
         if (configManagerHelper==null){
