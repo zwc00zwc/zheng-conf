@@ -33,26 +33,6 @@ public class ConfigHeartbeat {
             try {
                 lock.lock();
                 if (configHeartbeat==null){
-                    if (zookeeperRegistryCenter==null){
-                        ZookeeperConfig zookeeperConfig=new ZookeeperConfig();
-                        PropertiesUtility propertiesUtility=new PropertiesUtility("conf.properties");
-                        zookeeperConfig.setServerLists(propertiesUtility.getProperty("reg.serverList"));
-                        zookeeperConfig.setNamespace(propertiesUtility.getProperty("reg.namespace"));
-                        zookeeperConfig.setAuth(propertiesUtility.getProperty("reg.auth"));
-                        zookeeperRegistryCenter=new ZookeeperRegistryCenter(zookeeperConfig);
-                        zookeeperRegistryCenter.init();
-                    }
-                    try {
-//                        if (!zookeeperRegistryCenter.isExisted("/conf")){
-//                            zookeeperRegistryCenter.create("/conf",new String());
-//                        }
-                        CuratorFramework curatorFramework=(CuratorFramework) zookeeperRegistryCenter.getRawClient();
-                        PathChildrenCache childrenCache=new PathChildrenCache(curatorFramework,"/",true);
-                        childrenCache.getListenable().addListener(new ConfListener());
-                        childrenCache.start();
-                    } catch (Exception e) {
-                        logger.error("zookeeper配置监听异常"+e.toString());
-                    }
                     configHeartbeat=new ConfigHeartbeat();
                 }
             } finally {
@@ -73,6 +53,26 @@ public class ConfigHeartbeat {
             }
         }
         AppConfigContext.setContext(map);
+        //加载配置进行配置更新监听
+        if (zookeeperRegistryCenter==null){
+            ZookeeperConfig zookeeperConfig=new ZookeeperConfig();
+            PropertiesUtility propertiesUtility=new PropertiesUtility("conf.properties");
+            zookeeperConfig.setServerLists(propertiesUtility.getProperty("reg.serverList"));
+            zookeeperConfig.setNamespace(propertiesUtility.getProperty("reg.namespace"));
+            zookeeperConfig.setAuth(propertiesUtility.getProperty("reg.auth"));
+            zookeeperRegistryCenter=new ZookeeperRegistryCenter(zookeeperConfig);
+            zookeeperRegistryCenter.init();
+        }
+        //清空
+        zookeeperRegistryCenter.remove("/");
+        try {
+            CuratorFramework curatorFramework=(CuratorFramework) zookeeperRegistryCenter.getRawClient();
+            PathChildrenCache childrenCache=new PathChildrenCache(curatorFramework,"/",true);
+            childrenCache.getListenable().addListener(new ConfListener());
+            childrenCache.start();
+        } catch (Exception e) {
+            logger.error("zookeeper配置监听异常"+e.toString());
+        }
     }
 
     class HeartRun extends TimerTask {
